@@ -8,13 +8,15 @@
 HoneyNode honey(7,8);
 
 void reportReadouts() {
-    auto readouts = getSensorReadouts();
-    auto result = honey.Send(CH_READOUTS, readouts);
-    if (result != 0) Serial.println("Problem Sending");
+    auto data = getSensorReadouts();
+    auto result = honey.Send(CH_READOUTS, data);
+    if (result != 0) Serial.println("[READOUTS] Report Failed");
 }
 
 void reportPower() {
-    return;
+    auto data = getPowerReadouts();
+    auto result = honey.Send(CH_POWER, data);
+    if (result != 0) Serial.println("[POWER] Report Failed");
 }
 
 void reportAnomaly() {
@@ -34,6 +36,7 @@ void setup() {
     Serial.setTimeout(5000);
     initSensors();
     pinMode(BTN_RESET, INPUT_PULLUP);
+    analogReference(INTERNAL);
 
     // Configure Net
     honey.begin();
