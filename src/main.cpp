@@ -5,7 +5,7 @@
 #include "power.h"
 #include "anomaly.h"
 
-HoneyNode honey(7,8);
+HoneyNode honey(RF_CE, RF_CS);
 
 void reportReadouts() {
     auto data = getSensorReadouts();

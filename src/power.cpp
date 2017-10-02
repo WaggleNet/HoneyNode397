@@ -15,8 +15,8 @@ float computePercentage(float voltage){
 
 power_t getPowerReadouts() {
     boolean refFlag = false;
+    analogReference(INTERNAL);
     if (!(ADMUX >> REFS1)) {
-        analogReference(INTERNAL);
         analogRead(A6);
         analogRead(A6);
         analogRead(A6);
