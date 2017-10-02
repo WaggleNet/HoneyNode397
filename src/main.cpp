@@ -20,7 +20,7 @@ void reportPower() {
 }
 
 void reportAnomaly() {
-    if (hasAnyAnomaly) {
+    if (hasAnyAnomaly()) {
         honey.Send(CH_ANOMALY, anomaly_flags);
         clearAnomaly(AN_INTRUSION); // Intrusion is a one-off alarm
     }
