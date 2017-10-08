@@ -4,6 +4,7 @@
 #include "sensors.h"
 #include "power.h"
 #include "anomaly.h"
+#include "EEPROM.h"
 
 HoneyNode honey(RF_CE, RF_CS);
 
@@ -34,10 +35,15 @@ void setup() {
     // Setting up everything
     Serial.begin(115200);
     Serial.setTimeout(5000);
+    pinMode(BTN_RESET, INPUT_PULLUP);
     initSensors();
     pinMode(BTN_RESET, INPUT_PULLUP);
     analogReference(INTERNAL);
-
+    // Clear NodeID
+    if (!digitalRead(BTN_RESET)) {
+        EEPROM.write(0, 0);
+        Serial.println("Node ID is cleared");
+    }
     // Configure Net
     honey.begin();
     honey.AddChannel(CH_ANOMALY, uint32_t);

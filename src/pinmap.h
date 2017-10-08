@@ -1,6 +1,8 @@
 #pragma once
 #include "Arduino.h"
 
+#define RADIO_CHANNEL 123
+
 #define RF_CS 3
 #define RF_CE 4
 
