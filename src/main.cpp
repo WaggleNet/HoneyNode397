@@ -36,8 +36,9 @@ void setup() {
     Serial.begin(115200);
     Serial.setTimeout(5000);
     pinMode(BTN_RESET, INPUT_PULLUP);
-    initSensors();
-    pinMode(BTN_RESET, INPUT_PULLUP);
+    #ifndef NOSENSOR
+        initSensors();
+    #endif
     analogReference(INTERNAL);
     // Clear NodeID
     if (!digitalRead(BTN_RESET)) {
@@ -47,18 +48,24 @@ void setup() {
     // Configure Net
     honey.begin();
     honey.AddChannel(CH_ANOMALY, uint32_t);
-    honey.AddChannel(CH_READOUTS, readouts_t);
     honey.AddChannel(CH_POWER, power_t);
+    #ifndef NOSENSOR
+        honey.AddChannel(CH_READOUTS, readouts_t);
+    #endif
 
     // Begin Operations
-    readoutTimer.start();
     powerTimer.start();
     anomalyTimer.start();
+    #ifndef NOSENSOR
+        readoutTimer.start();
+    #endif
 }
 
 void loop() {
     honey.update();
-    readoutTimer.update();
     powerTimer.update();
     anomalyTimer.update();
+    #ifndef NOSENSOR
+        readoutTimer.update();
+    #endif
 }

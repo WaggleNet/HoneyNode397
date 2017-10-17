@@ -14,13 +14,17 @@ void HoneyNode::begin(uint8_t nodeID) {
 }
 
 void HoneyNode::begin(uint8_t nodeID, uint8_t radio_channel) {
-    Serial.print("Node ID set to ");
-    Serial.println(nodeID);
+    #ifdef DEBUG
+        Serial.print("Node ID set to ");
+        Serial.println(nodeID);
+    #endif
     this -> nodeID = nodeID;
 
     mesh.setNodeID(nodeID);
 
-    Serial.println(F("Connecting to Mesh..."));
+    #ifdef DEBUG
+        Serial.println(F("Connecting to Mesh..."));
+    #endif
     mesh.begin(radio_channel, RF24_2MBPS);
 }
 
@@ -41,8 +45,10 @@ void HoneyNode::update() {
         RF24NetworkHeader header;
         size_t data_size = network.peek(header);
         size_t channel_size = registry[header.type - 64];
-        if (channel_size != data_size)
-            Serial.println(F("Warning: Data size mismatch."));
+        #ifdef DEBUG
+            if (channel_size != data_size)
+                Serial.println(F("Warning: Data size mismatch."));
+        #endif
         byte *payload;
         payload = new byte[channel_size];
         network.read(header, payload, channel_size);
@@ -58,15 +64,19 @@ void HoneyNode::registerChannel(uint8_t channel, uint8_t size) {
     channel_t ch;
     ch.ch_id = channel;
     ch.size = size;
-    Serial.print("Registering ch#");
-    Serial.print(channel);
-    Serial.print(" with size ");
-    Serial.print(size);
-    Serial.print("...");
+    #ifdef DEBUG
+        Serial.print("Registering ch#");
+        Serial.print(channel);
+        Serial.print(" with size ");
+        Serial.print(size);
+        Serial.print("...");
+    #endif
     uint8_t flag = 1;
     while (flag > 0)
         flag = write(&ch, 64, sizeof(ch));
-    Serial.println("Done!");
+    #ifdef DEBUG
+        Serial.println("Done!");
+    #endif
 }
 
 uint8_t HoneyNode::write(void *payload, uint8_t ch, uint8_t len) {
@@ -82,7 +92,9 @@ uint8_t HoneyNode::write(void *payload, uint8_t ch, uint8_t len) {
       // If a write fails, check connectivity to the mesh network
       if ( ! mesh.checkConnection() ) {
         //refresh the network address
-        Serial.println("Renewing Address");
+        #ifdef DEBUG
+            Serial.println("Renewing Address");
+        #endif
         mesh.renewAddress();
         return 2;
       } else return 1;
