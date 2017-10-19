@@ -7,8 +7,8 @@ struct readouts_t {
 };
 
 struct power_t {
-    float battery_volt;
     float solar_volt;
+    float battery_volt;
 };
 
 struct anomaly_t {

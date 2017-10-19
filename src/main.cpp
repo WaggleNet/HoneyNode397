@@ -48,13 +48,17 @@ void setup() {
     // Configure Net
     honey.begin();
     honey.AddChannel(CH_ANOMALY, uint32_t);
-    honey.AddChannel(CH_POWER, power_t);
+    #ifndef NOPOWER
+        honey.AddChannel(CH_POWER, power_t);
+    #endif
     #ifndef NOSENSOR
         honey.AddChannel(CH_READOUTS, readouts_t);
     #endif
 
     // Begin Operations
-    powerTimer.start();
+    #ifndef NOPOWER
+        powerTimer.start();
+    #endif
     anomalyTimer.start();
     #ifndef NOSENSOR
         readoutTimer.start();
@@ -63,7 +67,9 @@ void setup() {
 
 void loop() {
     honey.update();
-    powerTimer.update();
+    #ifndef NOPOWER
+        powerTimer.update();
+    #endif
     anomalyTimer.update();
     #ifndef NOSENSOR
         readoutTimer.update();

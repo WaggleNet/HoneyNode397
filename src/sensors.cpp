@@ -30,5 +30,11 @@ readouts_t getSensorReadouts() {
         readouts.temp = (t1 + t2) / 2;
         readouts.humid = (h1 + h2) / 2;
     }
+    #ifdef DEBUG
+        Serial.print("[READOUTS] Temp=");
+        Serial.print(readouts.temp);
+        Serial.print(", Humid=");
+        Serial.println(readouts.humid);
+    #endif
     return readouts;
 }
