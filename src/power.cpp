@@ -26,8 +26,8 @@ power_t getPowerReadouts() {
     }   // Get my voltage right
 
     power_t result;
-    result.battery_volt = computeVoltage(SOLAR_SENS);
-    result.solar_volt = computeVoltage(BATT_SENS);
+    result.battery_volt = computeVoltage(BATT_SENS);
+    result.solar_volt = computeVoltage(SOLAR_SENS);
     writeAnomaly(AN_LOWBATT, computePercentage(result.battery_volt) < 20);
     // If someone needs higher reference, return it.
     if (refFlag) analogReference(DEFAULT);
